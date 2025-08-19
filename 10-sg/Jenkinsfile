@@ -54,7 +54,7 @@ pipeline {
         }
         stage('Bastion EKS ACM ALB') {
             parallel {
-                stage('Trigger Bation') {
+                stage('Trigger Bastion') {
                     steps {
                         script {
                             build job: '20-bastion' 
