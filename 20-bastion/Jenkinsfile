@@ -52,47 +52,7 @@ pipeline {
                 }
             }
         }
-        stage('Bastion EKS ACM ALB') {
-            parallel {
-                stage('Bastion') {
-                    steps [
-                        script {
-                            build job: '20-bastion'
-                               propagate: false // even sg fails vpc will not be effected 
-                               wait: false // vpc will not wait for sg pipeline completion 
-                        }
-                    ]
-                }
-                stage('EKS') {
-                    steps {
-                        script {
-                            build job: '80-eks'
-                               propagate: false // even sg fails vpc will not be effected 
-                               wait: fasle // vpc will not wait for sg pipeline completion 
-                        }
-                    }
-                }
-                stage('ACM') {
-                    steps {
-                        script {
-                            build job: '60-acm'
-                               propagate: false //even sg fails vpc will not be affected 
-                               wait: fasle // vpc will not wait for sg pipeline completion 
-                        }
-                    }
-                }
-            }
-
-        }
-        stage('ALB') {
-            steps {
-                script {
-                    build job: '70-frontend-alb'
-                      propagate: false //even sg fails vpc will not be effected 
-                      wait: false // vpc will not wait for sg pipeline completion 
-                }
-            }
-        }
+        
         
     }
     post {
