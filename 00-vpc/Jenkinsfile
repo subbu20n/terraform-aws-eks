@@ -1,81 +1,70 @@
 pipeline {
     agent {
-       label 'AGENT-1'
+        label 'AGENT-1'
     }
     environment {
-        appVersion = '' 
-        REGION  =  "us-east-1" 
-        ACC_ID  = "888947293288" 
+        appVersion = ''
+        REGION = "us-east-1" 
         PROJECT = "roboshop"
+        ACC_ID  = "888947293288"   
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
-        disableConcurrentBuilds() 
-        ansiColor('xterm') 
+        disableConcurrentBuilds()
+        ansiColor('xterm')
     }
-    // Build 
-    stages  {
-        stage('init') {
-            steps {
-                script {
-                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                        sh """
-                            cd 00-vpc
-                            terraform init -reconfigure
-                        """
-                    }
+    //Build 
+    stages {
+        stage('init'){
+            steps{
+                script{
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1'){
+                      sh """
+                       cd 00-vpc
+                       terraform init -reconfigure 
+                      """
+                    }  
                 }
             }
         }
-        stage('plan') {
+        stage('plan'){
             steps {
                 script{
-                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                        sh """ 
-                           cd 00-vpc
-                           terraform plan
-                        """
-                    }
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1'){
+                      sh """
+                       cd 00-vpc 
+                       terraform plan
+                      """ 
+                    }  
                 }
             }
         }
-        stage('apply') {
+        stage('apply'){
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
                 submitter "alice,bob"
             }
-            steps {
-                script {
-                    withAWS(credentials: 'aws-creds',region: 'us-east-1') {
-                        sh """ 
-                           cd 00-vpc 
-                           terraform apply -auto-approve 
-                        """ 
-                    } 
-                    
+            steps{
+                script{
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1'){
+                     sh """
+                        cd 00-vpc 
+                        terraform apply-auto-aprove    
+                     """
+                    }
                 }
             }
         }
-        // Down stream job
-        stage('Trigger SG') {
-            steps {
-                script {
-                    build job: '10-sg' 
-                      propagate: false // even sg fails vpc will not be effected 
-                      wait: false // vpc will not be wait for pipeline completion 
-                }
-            }
-        }
-        
     }
     post {
-        always {
-            echo "i will always say Hello Again!"
+        always{
+            echo "I will always say Hello Again!"
             deleteDir()
         }
         success {
             echo "Hello Success"
+
         }
         failure {
             echo "Hello Failure"
