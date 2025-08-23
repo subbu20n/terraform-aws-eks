@@ -67,7 +67,7 @@ pipeline {
         stage('Trigger SG'){
             steps{
                 script{
-                    build job: 'catalogue-cd'
+                    build job: '10-sg'
                        propagate: fasle // even sg fails vpc will not be effected 
                        wait: false // vpc will not wait for sg pipeline completion 
                 }
