@@ -1,24 +1,21 @@
-terraform {
+terraform { 
     required_providers {
         aws = {
             source = "hashicorp/aws" 
-            version = ">= 6.15.0, < 7.0.0"
+            version = "5.98.0"
         }
     }
     backend "s3" {
         bucket   = "90-remote-state-dev" 
-        key      = "roboshop-dev-eks" 
+        key      = "roboshop-dev-frontend-alb"
         region   = "us-east-1"
         encrypt  = true 
-        use_lockfile  = true 
+        use_lockfile = true 
     }
 }
+
 provider "aws" {
     #configuration options 
-    region = "us-east-1"
+    region  = "us-east-1"
 }
-
-
-
-
-
+ 

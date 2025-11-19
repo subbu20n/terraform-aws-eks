@@ -1,9 +1,9 @@
 variable "project" {
-    default = "roboshop" 
+    default = "roboshop"
 }
 
 variable "environment" {
-    default = "dev" 
+    default = "dev"
 }
 
 variable "zone_id" {
@@ -12,4 +12,4 @@ variable "zone_id" {
 
 variable "zone_name" {
     default = "subbuaws.site"
-} 
+}   
