@@ -58,7 +58,18 @@ pipeline {
                 }
             }
         }
+        // Down stream job 
+        stage ('Trigger SG') {
+            steps {
+                script {
+                    build job: '10-sg' 
+                    propagate: false //even sg fails vpc will not be effected 
+                    wait: false //vpc will not wait for sg pipeline completion 
+                }
+            }
+        }
     }
+    
     post {
         always {
             echo "I will always say HELLO AGAIN!"
