@@ -1,0 +1,65 @@
+pipeline {
+    agent {
+        label 'AGENT-1' 
+    }
+    environment {
+        ACC_ID = ""
+        REGION = "us-east-1" 
+        PROJECT = "roboshop" 
+    }
+    options {
+        timeout(time: 30, unit: 'MINUTES') 
+        disableConcurrentBuilds() 
+        ansiColor('xterm') 
+    }
+    stages {
+        stage ('init') {
+            steps {
+                script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                           cd 20-bastion 
+                           terraform init -reconfigure 
+                        """ 
+                    }
+                }
+            }
+        }
+        stage ('plan') {
+            steps {
+                script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                          cd 20-bastion 
+                          terraform plan 
+                        """ 
+                    }        
+                }
+            }
+        }
+        stage ('apply') {
+            steps {
+                script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """ 
+                           cd 20-bastion 
+                           terraform apply -auto-approve 
+                        """
+                    }
+                }
+            }
+        } 
+    }
+    post {
+        always {
+            echo "I always say HELLO AGAIN!" 
+            deleteDir()
+        }
+        success {
+            echo "Success"
+        }
+        failure {
+            echo "Failure"
+        }
+    }
+}

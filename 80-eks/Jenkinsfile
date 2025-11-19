@@ -7,7 +7,7 @@ pipeline {
         REGION = "us-east-1" 
         PROJECT = "roboshop" 
     }
-    options { 
+    options {
         timeout(time: 30, unit: 'MINUTES') 
         disableConcurrentBuilds() 
         ansiColor('xterm') 
@@ -23,7 +23,7 @@ pipeline {
                         """ 
                     }
                 }
-            } 
+            }
         }
         stage ('plan') {
             steps {
@@ -49,46 +49,6 @@ pipeline {
                 }
             }
         }
-        stage ('Bastion EKS ACM ALB') {
-            parallel {
-                stage ('Bastion') {
-                    steps {
-                        script {
-                            build job: '20-bastion' 
-                            propagate: false //even sg fails vpc will not be effected 
-                            wait: false //vpc will not wait for sg pipeline completion 
-                        }
-                    }
-                }
-                stage ('EKS') {
-                    steps {
-                        script {
-                            build job: '80-eks' 
-                            propagate: false //even sg fails vpc will not be effected 
-                            wait: false //vpc will not wait for sg pipeline completion 
-                        }
-                    }
-                }
-                stage ('ACM') {
-                    steps {
-                        script {
-                            build job: '60-acm' 
-                            propagate: false //even sg fails vpc will not be effected 
-                            wait: false //vpc will not wait for sg pipeline completion 
-                        }
-                    }
-                }
-            }
-        }
-        stage ('ALB') {
-            steps {
-               script {
-                  build job: '70-frontend' 
-                  propagate: false //even sg fails vpc will not be effected
-                  wait: false //vpc will not wait for sg pipeline completion 
-               }
-            }
-         }
     }
     post {
         always {
