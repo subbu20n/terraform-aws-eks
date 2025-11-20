@@ -14,7 +14,7 @@ pipeline {
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    //BUILD 
+    //BUILD  
     stages{
         stage ('init') {
             steps {
