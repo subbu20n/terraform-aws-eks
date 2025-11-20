@@ -18,7 +18,7 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """
-                           cd 10-sg 
+                           cd 70-frontend 
                            terraform init -reconfigure 
                         """ 
                     }
@@ -30,8 +30,8 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """
-                          cd 10-sg 
-                          terraform plan 
+                          cd 70-frontend 
+                          terraform plan -lock=false
                         """ 
                     }        
                 }
@@ -42,8 +42,8 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """ 
-                           cd 10-sg 
-                           terraform apply -auto-approve 
+                           cd 70-frontend 
+                           terraform apply -auto-approve -lock=false
                         """
                     }
                 }

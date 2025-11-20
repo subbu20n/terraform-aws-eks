@@ -31,7 +31,7 @@ pipeline {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """
                           cd 20-bastion 
-                          terraform plan 
+                          terraform plan -lock=false
                         """ 
                     }        
                 }
@@ -43,7 +43,7 @@ pipeline {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """ 
                            cd 20-bastion 
-                           terraform apply -auto-approve 
+                           terraform apply -auto-approve -lock=false
                         """
                     }
                 }
