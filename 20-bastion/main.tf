@@ -1,6 +1,6 @@
 resource "aws_instance" "bastion" {
   ami           = local.ami_id
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
   vpc_security_group_ids = [local.bastion_sg_id]
   subnet_id = local.public_subnet_id
 
@@ -17,4 +17,4 @@ resource "aws_instance" "bastion" {
         Name = "${var.project}-${var.environment}-bastion"
     }
   )
-}
+} 
