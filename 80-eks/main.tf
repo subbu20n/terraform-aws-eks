@@ -11,10 +11,10 @@ module "eks" {
       before_compute = true
     }
     kube-proxy             = {} 
-    vpc-cni                = {
+    vpc-cni                = { 
       before_compute = true
     } 
-    metrics-server= {}
+    metrics-server= {} 
   }
  
   # Optional

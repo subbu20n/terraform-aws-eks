@@ -29,3 +29,4 @@ resource "aws_ssm_parameter" "vpn_sg_id" {
 }
 
 
+

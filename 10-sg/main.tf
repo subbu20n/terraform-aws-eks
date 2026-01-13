@@ -8,7 +8,7 @@ module "ingress_alb" {
     sg_description = "for ingress alb"
     vpc_id = local.vpc_id
 }
-
+ 
 module "bastion" {
     #source = "../../terraform-aws-securitygroup"
     source = "git::https://github.com/subbu20n/terraform-aws-securitygroup.git?ref=main"

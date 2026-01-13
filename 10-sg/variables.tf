@@ -14,3 +14,4 @@ variable "bastion_sg_description" {
     default = "created for bastion instance"
 }
 
+ 
