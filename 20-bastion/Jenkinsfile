@@ -36,7 +36,8 @@ pipeline {
                     }        
                 }
             }
-        }
+        } \
+        
         stage ('apply') {
             steps {
                 script {
